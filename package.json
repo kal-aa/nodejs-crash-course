@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-crash-course",
+  "version": "1.0.0",
+  "description": "My Node.js crash course notes, exercises, and practice projects.",
+  "homepage": "https://github.com/kal-aa/nodejs-crash-course#readme",
+  "bugs": {
+    "url": "https://github.com/kal-aa/nodejs-crash-course/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kal-aa/nodejs-crash-course.git"
+  },
+  "license": "ISC",
+  "author": "Kalab Sisay Muhamed",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --env-file=.env server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
