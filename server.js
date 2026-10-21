@@ -1,25 +1,43 @@
-import http from 'http';
+import http from "http";
+import fs from "fs/promises";
+import url from "url";
+import path from "path";
+
 const PORT = process.env.PORT;
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const server = http.createServer((req, res) => {    
-    // res.setHeader("Content-Type", "text/html");
-    // res.statusCode = 404;
-    // console.log(req.url);
-    // console.log(req.method);
+const server = http.createServer(async (req, res) => {
+  // res.setHeader("Content-Type", "text/html");
+  // res.statusCode = 404;
+  // console.log(req.url);
+  // console.log(req.method);
 
-    if(req.url === '/'){ 
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end('<h1>Home Page</h1>');
-    }  else if (req.url === '/about') {
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end('<h1>About Page</h1>');
+  try {
+    if (req.method === "GET") {
+      let filePath;
+
+      if (req.url === "/") {
+        filePath = path.join(__dirname, "public", "index.html");
+      } else if (req.url === "/about") {
+        filePath = path.join(__dirname, "public", "about.html");
+      } else {
+        throw new Error("Not Found");
+      }
+
+      const data = await fs.readFile(filePath);
+      res.setHeader('Content-Type', 'text/html')
+      res.write(data);
+      res.end();
     } else {
-        res.writeHead(500, {"Content-Type": "text/html"});
-        res.end('<h1>Page Not Found</h1>');
+      throw new Error("Method not allowed");
     }
-
+  } catch (error) {
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("Server Error");
+  }
 });
 
 server.listen(PORT, () => {
-    console.log(`Server runing on port ${PORT}`)
-})
+  console.log(`Server runing on port ${PORT}`);
+});
